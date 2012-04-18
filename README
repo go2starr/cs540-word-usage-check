@@ -1,0 +1,164 @@
+NAME: Mike Starr
+CS: starr
+
+
+
+========================================
+  Compiling
+========================================
+
+To compile, run `make'
+
+
+========================================
+  Testing
+========================================
+
+To run all tests, run `make tests`
+
+To run Bayes tests, run `make bTests'
+To run CBR tests, run `make cTests'
+
+
+
+
+================================================================================
+  Lab Report
+================================================================================
+
+  In all learning algorithms implemented, the only information used
+from the training examples was part of speech.  This parts-of-speech were
+position-oriented, such that different positions in a sentence were
+often given different weights.
+
+  The reasoning behind not using stem/word is as follows:
+     Given the knowledge of a word's part of speech, say a noun,
+     it is most often the case that this word can be replaced
+     with another word of the same part of speech, and the original
+     sentence will remain valid.
+
+     For example,
+     "The [noun]dog ran [adverb]quickly" 
+     is just as valid as
+     " The [noun]cat ran [adverb]slowly."
+     
+     While there are certainly exceptions, like expressions and other
+     grammatical anomalies, the strict usage of parts of speech had
+     relatively good performance.
+
+========================================
+  CBR
+========================================
+
+  The case-based reasoning algorithms I implemented both assigned
+specific "weighting factors" to each position in a given sentence.
+Words which are positioned closer to the center word are given more
+weight, such that words having many matching parts of speech in close
+proximity to the center word will be awared more points for "similarity".
+
+  This is based on the assumption that words are most strongly dependent
+on adjacent words, and least strongly dependent on words positionally far away.
+
+CBR1]
+  CBR1's metric is as follows:  a weight is assigned to each position in an
+  example.  When comparing two examples, if the parts of speech at a given
+  position match, the weight is added to the similarity score.
+
+  The metric is fairly simple, but this algorithm turned out to be the
+  most consistently well performing.  
+
+  Accept/Except:
+	This algorithm scored very well: 94% correct.  
+
+  Among/Between:
+	These two words proved to be most difficult for all learning algorithms.
+	There does not appear to be as clear-cut of a relationship between
+	among/between and surrounding parts of speech:  82% correct.
+
+  Good/Well:
+	This algorithm scored good, erm well: 86%.
+
+  Their/There:
+	Again, a good score: 94%.
+
+
+CBR2]
+  CBR2's metric was based on the Levenshtein distance (edit distance) between
+two examples.  The cost of "editting" words nearest the center is greater than
+the cost of those farther away.  The idea here, was that certain words may appear
+(such as commas) which can be removed to produce a sentence with similar structure.
+
+Unfortunately, the algorithm did not fair well on all test cases.
+
+  Accept/Except:
+	82%
+
+  Among/Between:
+	65%
+
+  Good/Well:
+	87%
+
+  Their/There:
+	83%
+	
+
+========================================
+  Bayes-Net
+========================================
+
+  As with the CBR algorithms, the Baye's net algorithms assigned
+conditional dependencies from words to their neighboring words.
+As a result, the center word did not depend on the earliest or latest
+words to appear in an example.
+
+BN1]
+  The first Baye's net assigned dependencies from right to left within
+a sentence.  This represents the logical idea that each word depends
+on the words preceding it.
+
+  Interestingly, this algorithm performed very well on their/there and good/well,
+and poorly on the other words.  This may suggest that the words this algorithm
+performed poorly on have a dependence both from right to left, as well as left to right.
+
+   Accept/Except:
+	75%
+
+   Among/Between:
+	56%
+
+   Good/Well:
+	98%
+
+   Their/There:
+	100%
+
+   Accept/Except:
+	75%
+
+BN2]
+  The second Baye's net implementation assigned dependencies from the center
+word to the words directly to the left and right.  This provided more flexibility
+for words such as among/between and accept/except which do not strictly depend
+on the words appearing earlier within a sentence.  This topology suggests that
+one
+
+Interestingly, all of the examples which BN2 performed well on, were exactly
+the ones that BN1 struggled with.  Given the nature of both BN1 and BN2, this
+suggests something about the context in which the various words are used (i.e.
+
+
+   Accept/Except:
+	100%
+
+   Among/Between:
+	100%
+
+   Good/Well:
+	3%
+
+   Their/There:
+	36%
+
+   Accept/Except:
+	100%
